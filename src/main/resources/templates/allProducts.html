@@ -1,61 +1,84 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-    <meta charset="ISO-8859-1">
-
-    <link rel="stylesheet"
-          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-          crossorigin="anonymous">
-
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>Products list</title>
 </head>
 <body>
-
-<div class="container my-2">
-    <h1>Product List</h1>
-
-    <a th:href = "@{/products/add}" class="btn btn-primary btn-sm mb-3"> Add New Product </a>
-
-    <table border="1" class = "table table-striped table-responsive-md">
-        <thead>
-        <tr>
-            <th>
-                    Id</a>
-            </th>
-            <th>
-                    Name</a>
-            </th>
-            <th>
-                    Description</a>
-            </th>
-            <th>
-                    Price</a>
-            </th>
-            <th>
-                    Amount</a>
-            </th>
-            <th>
-                    ImageFileName</a>
-            </th>
-            <th> Actions </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="product : ${productList}">
-            <td th:text="${product.id}"></td>
-            <td th:text="${product.name}"></td>
-            <td th:text="${product.description}"></td>
-            <td th:text="${product.price}"></td>
-            <td th:text="${product.amount}"></td>
-            <td th:text="${product.imageFileName}"></td>
-            <td> <a th:href="@{/products/update/{id}(id=${product.id})}" class="btn btn-primary">Update</a>
-                <a th:href="@{/products/delete/{id}(id=${product.id})}" class="btn btn-danger">Delete(Totally position)</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
-    <a th:href = "@{/}"> Back to the main page</a>
-</div>
+    <div class="wrapper">
+        <div class="container">
+            <header class="header">
+                <div class="header__container">
+                    <a href="#" th:href="@{/}" class="header__logo"><img th:src="@{'/img/logo.svg'}" alt="logo" class="logo"></a>
+                    <div class="header__menu menu">
+                        <div class="menu__icon">
+                            <span></span>
+                        </div>
+                        <nav class="menu__body">
+                            <ul class="menu__list">
+                                <li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/users}" class="menu__link">Show all users</a></li>
+                                <li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/products}" class="menu__link">Show all products</a></li>
+                                <li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/orders}" class="menu__link">Show all orders</a></li>
+                                <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}" class="menu__link">Logout</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <main class="admin-products-table">
+                <p class="admin-products-list__title">Products list </p>
+                <a th:href = "@{/products/add}"><button class="admin-add-product__btn">Add New Product</button></a>
+                <div class="admin-products__container" th:each="product : ${productList}">
+                    <div class="admin-product-row">
+                        <span class="material-icons admin-products_click-btn">ads_click</span>
+                        <div class="admin-product-id-tag">Id:</div>
+                        <div th:text="${product.id}" class="admin-product-id"></div>
+                        <div class="admin-product-row__btns">
+                                <a th:href="@{/products/update/{id}(id=${product.id})}" class="admin-edit-btn__link"><span class="material-icons admin-edit-btn-prod">edit</span></a>
+                                <a th:href="@{/products/delete/{id}(id=${product.id})}" class="admin-delete-product-btn__link"><span class="material-icons admin-delete-btn-prod">delete</span></a>
+                        </div>
+                    </div>
+                    <div class="admin-product-info__container">
+                        <div class="admin-product__name">
+                            <div class="admin-product__name-tag">Name:</div>
+                            <div th:text="${product.name}" class="admin-product__name-value"></div>
+                        </div>
+                        <div class="admin-product__desc">
+                                <div class="admin-product__desc-tag">Description:</div>
+                                <div th:text="${product.description}" class="admin-product__desc-value"></div>
+                        </div>
+                        <div class="admin-product__amount">
+                                <div class="admin-product__amount-tag">Amount:</div>
+                                <div th:text="${product.amount}" class="admin-product__amount-value"></div>
+                        </div>
+                        <div class="admin-product__price">
+                                <div class="admin-product__price-tag">Price:</div>
+                                <div th:text="${product.price}" class="admin-product__price-value"></div>
+                        </div>
+                        <div class="admin-product__img-name">
+                                <div class="admin-product__img-tag">Image:</div>
+                                <div th:text="${product.imageFileName}" class="admin-product__img-value"></div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <footer class="footer">
+                <div class="footer__content">
+                    <div class="footer__logos">
+                        <a href="#"><img th:src="@{'/img/mastercard-logo.svg'}" alt="mastercard" class="mastercard"></a>
+                        <a href="#"><img th:src="@{'/img/visa-logo.svg'}" alt="visa" class="visa"></a>
+                    </div>
+                    <p>&copy; Internet shop &laquo;Grab&raquo; 2022-2023 </p>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <script th:src="@{'/js/index.js'}"></script>
 </body>
 </html>

@@ -6,11 +6,14 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
           crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@200;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
 <!-- create navigation bar ( header) -->
 <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
+    <div class="container" style="font-family: 'Mukta', sans-serif; height: 50px;">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed"
                     data-toggle="collapse" data-target="#navbar" aria-expanded="false"
@@ -19,8 +22,7 @@
                     class="icon-bar"></span> <span class="icon-bar"></span> <span
                     class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#" th:href="@{/}">Registration and
-                Login Module</a>
+            <a class="navbar-brand" href="#" th:href="@{/registration}" style="font-size: 22px">Registration</a>
         </div>
     </div>
 </nav>
@@ -28,17 +30,17 @@
 <br>
 <br>
 <!-- Create HTML registration form -->
-<div class="container">
+<div class="container" style="font-family: 'Mukta', sans-serif; margin-top: 30px;">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
 
             <!-- success message -->
             <div th:if="${param.success}">
                 <div class="alert alert-info">You've successfully registered
-                    to our awesome app! Please log in to continue!</div>
+                    to our awesome app ! Please log in to continue !</div>
             </div>
 
-            <h1>Registration</h1>
+            <h1 style="text-align: center;">Registration</h1>
 
              <span th:utext="${successMessage}"></span>
 
@@ -70,18 +72,16 @@
                 <div class="alert alert-success alert dismissible col-sn-12"
                      th:if="${(bindingResult != null && bindingResult.getAllErrors() != null)}">
                     <button type="button" class="close" data-dismiss="alert"
-                            aria-hidden="true">x</button>
+                            aria-hidden="true"></button>
                     <ul th:each="data : ${bindingResult.getAllErrors()}">
                         <li th:text="${data.getDefaultMessage()}"></li>
                     </ul>
                 </div>
-
-
-
                 <div class="form-group">
                     <button type="submit" class="btn btn-success">Register</button>
-                    <span>Already registered? <a href="/" th:href="@{/login}">Login
-								here</a></span>
+                    <span style="margin-left: 10px;">Already registered ? 
+                        <a href="/" th:href="@{/login}">Login here</a>
+                    </span>
                 </div>
             </form>
         </div>

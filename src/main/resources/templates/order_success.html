@@ -1,28 +1,50 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-    <meta charset="ISO-8859-1">
-
-    <link rel="stylesheet"
-          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-          crossorigin="anonymous">
-
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>Order success</title>
 </head>
 <body>
-
-<div class="container my-2">
-    <h1>Success!</h1>
-
-
-
-    <h3  style="color:#dc143c">
-
-        You create an order!
-    </h3>
-
-    <td> <a th:href="@{/orders/show}" class="btn btn-primary">My orders</a>
-    <a th:href = "@{/}" class="btn btn-primary"> Back to the shopping</a>
-</div>
+    <div class="wrapper">
+        <div class="container">
+            <header class="header">
+                <div class="header__container">
+                    <a href="#" th:href="@{/}" class="header__logo"><img th:src="@{'/img/logo.svg'}" alt="logo" class="logo"></a>
+                    <div class="header__menu menu">
+                        <div class="menu__icon">
+                            <span></span>
+                        </div>
+                        <nav class="menu__body">
+                            <ul class="menu__list">
+                                <li sec:authorize="hasRole('ROLE_USER')"><a th:href="@{/cart/show}" class="menu__link">Shopping cart</a></li>
+                                <li sec:authorize="hasRole('ROLE_USER')"><a th:href="@{/orders/show}" class="menu__link">My orders</a></li>
+                                <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}" class="menu__link">Logout</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <main class="order__result">
+                <p class="order-success">Success!</p>
+                <p class="order-was-created">Your order was created!</p>
+            </main>
+            <footer class="footer">
+                <div class="footer__content">
+                    <div class="footer__logos">
+                        <a href="#"><img th:src="@{'/img/mastercard-logo.svg'}" alt="mastercard" class="mastercard"></a>
+                        <a href="#"><img th:src="@{'/img/visa-logo.svg'}" alt="visa" class="visa"></a>
+                    </div>
+                    <p>&copy; Internet shop &laquo;Grab&raquo; 2022-2023 </p>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <script th:src="@{'/js/index.js'}"></script>
 </body>
 </html>

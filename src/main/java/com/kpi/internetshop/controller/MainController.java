@@ -19,7 +19,7 @@ public class MainController {
 
     @GetMapping("/")
     public String home(Model model) {
-        List<Product> products = productService.getAll().stream().filter(product -> product.getAmount() > 0).collect(Collectors.toList());
+        List<Product> products = productService.getAll().stream().filter(product -> product.getAmount() >= 0).collect(Collectors.toList());
         model.addAttribute("products", products);
         return "index";
     }

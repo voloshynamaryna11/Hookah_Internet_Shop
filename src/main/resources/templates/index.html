@@ -1,100 +1,78 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="en"
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-    <meta charset="ISO-8859-1">
-    <title>Registration and Login App</title>
-
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-          crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>Grab Shop</title>
 </head>
 <body>
-<!-- create navigation bar ( header) -->
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed"
-                    data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-                    aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span> <span
-                    class="icon-bar"></span> <span class="icon-bar"></span> <span
-                    class="icon-bar"></span>
-            </button>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
-            </ul>
-            <ul class="nav navbar-nav">
-                <li sec:authorize="isAuthenticated()"><a th:href="@{/registration}">Registration</a></li>
-            </ul>
-            <ul class="nav navbar-nav">
-                <li sec:authorize="isAuthenticated()"><a th:href="@{/users}">Show all Users(Admin)</a></li>
-            </ul>
-            <ul class="nav navbar-nav">
-                <li sec:authorize="isAuthenticated()"><a th:href="@{/products}">Show all Products(Admin)</a></li>
-            </ul>
-            <ul class="nav navbar-nav">
-                <li sec:authorize="isAuthenticated()"><a th:href="@{/orders}">Show all Orders(Admin)</a></li>
-            </ul>
-            <ul class="nav navbar-nav">
-                <li sec:authorize="isAuthenticated()"><a th:href="@{/cart/show}">My Shopping Cart</a></li>
-            </ul>
-            <ul class="nav navbar-nav">
-                <li sec:authorize="isAuthenticated()"><a th:href="@{/orders/show}">My Orders</a></li>
-            </ul>
+    <div class="wrapper">
+        <div class="container">
+            <header class="header">
+                <div class="header__container">
+                    <a href="#" th:href="@{/}" class="header__logo"><img th:src="@{'/img/logo.svg'}" alt="logo" class="logo"></a>
+                    <div class="header__menu menu">
+                        <div class="menu__icon">
+                            <span></span>
+                        </div>
+                        <nav class="menu__body">
+                            <ul class="menu__list">
+                                <li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/users}" class="menu__link">Show all users</a></li>
+                                <li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/products}" class="menu__link">Show all products</a></li>
+                                <li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/orders}" class="menu__link">Show all orders</a></li>
+                                <li sec:authorize="hasRole('ROLE_USER')"><a th:href="@{/cart/show}" class="menu__link">Shopping cart</a></li>
+                                <li sec:authorize="hasRole('ROLE_USER')"><a th:href="@{/orders/show}" class="menu__link">My orders</a></li>
+                                <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}" class="menu__link">Logout</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <main class="showcase">
+                <div class="products__row">
+                    <div th:each="product : ${products}" class="products__column">
+                        <div class="product">
+                            <div class="product__img">
+                                <img th:src="@{'/img/'} + ${product.imageFileName}" class="img" alt="item">
+                            </div>
+                            <div class="product__name" th:text="${product.name}"></div>
+                            <div class="product__amount-tag">
+                                <p>Available quantity: </p>
+                                <div class="product__amount" th:text="${product.amount}"></div>
+                            </div>
+                            <div class="product__description-tag">
+                                <p>Description: </p>
+                                <div class="product__description" th:text="${product.description}"></div>
+                            </div>
+                            <div class="product__buy-field">
+                                <div class="dollar">
+                                    <div class="product__price" th:text="${product.price}"></div>
+                                    <p>$</p>
+                                </div>
+                                <div class="cart__icon">
+                                    <a th:href="@{/cart/add/{id}(id=${product.id})}"><span class="material-icons md-36 cart">shopping_cart</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>    
+            </main>
+            <footer class="footer">
+                <div class="footer__content">
+                    <div class="footer__logos">
+                        <a href="#"><img th:src="@{'/img/mastercard-logo.svg'}" alt="mastercard" class="mastercard"></a>
+                        <a href="#"><img th:src="@{'/img/visa-logo.svg'}" alt="visa" class="visa"></a>
+                    </div>
+                    <p>&copy; Internet shop &laquo;Grab&raquo; 2022-2023 </p>
+                </div>
+            </footer>
         </div>
     </div>
-</nav>
-<br>
-<br>
-
-<div class="container">
-    <h1>
-        Hookah Internet Shop</h1>
-</div>
-<style>
-    .container {
-        text-align: center;
-    }
-</style>
-
-<tr th:each="product : ${products}">
-    <figure class="sign">
-        <p><img class="foto" th:src="@{'/images/'} + ${product.imageFileName}" width="150" height="212" alt="kalian">
-        </p>
-        <figcaption>
-   <span class="price"><td th:text="${product.name}"></td><br>
-   </span>
-            <td th:text="${product.price}"></td>
-            <p style="text-align: center"><span class="amount">Quantity available: </span>
-            <td th:text="${product.amount}"></td>
-            <p style="text-align: center">
-                <button><a th:href="@{/cart/add/{id}(id=${product.id})}" class="btn btn-primary">Add to cart</a>
-                </button>
-            <p style="text-align: center"><span class="description">Description: </span>
-            <td th:text="${product.description}"></td>
-        </figcaption>
-    </figure>
-</tr>
-
-<style>
-    .sign {
-        float: left;
-        border: 1px solid #333;
-        padding: 10px;
-        margin: 40px 200px 10px 60px;
-        background: #f0f0f0;
-    }
-
-    .sign figcaption {
-        margin: 0 auto 5px;
-        text-align: center;
-    }
-
-</style>
+    <script th:src="@{'/js/index.js'}"></script>
 </body>
 </html>
