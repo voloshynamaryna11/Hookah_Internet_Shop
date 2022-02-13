@@ -96,12 +96,14 @@ public class ShoppingCartController {
     }
 
     @PostMapping("/cart/save")
-    public String saveProduct(@ModelAttribute("item") Item item) {
+    public String saveProduct(@ModelAttribute("item") Item item, Authentication authentication) {
         Product product = productService.get(item.getProductId());
-        if(product.getAmount() < item.getAmount()) {
+
+        int oldAmount = itemService.get(item.getId()).getAmount();
+        if(product.getAmount() + oldAmount < item.getAmount()) {
             return "redirect:/cart/update/" + item.getId()+ "?success";
         }
-        int oldAmount = itemService.get(item.getId()).getAmount();
+
         itemService.update(item);
         productService.deleteAmount(product, itemService.get(item.getId()).getAmount() - oldAmount);
         return "redirect:/cart/show";
